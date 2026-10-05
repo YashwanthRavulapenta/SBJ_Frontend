@@ -1,0 +1,450 @@
+
+.main-navbar {
+    width: 100%;
+
+    background: #050505;
+
+    border-bottom: 1px solid #292929;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   NAVBAR CONTAINER
+========================================================= */
+
+.navbar-container {
+    width: 100%;
+
+    max-width: 1200px;
+
+    min-height: 68px;
+
+    margin: 0 auto;
+
+    padding: 0 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 34px;
+}
+
+
+/* =========================================================
+   NAVBAR LINKS
+========================================================= */
+
+.navbar-link {
+    position: relative;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.3px;
+
+    padding: 8px 2px;
+
+    transition:
+        color 0.25s ease;
+}
+
+
+.navbar-link:hover {
+    color: #f6d365;
+}
+
+
+/* =========================================================
+   GOLD UNDERLINE
+========================================================= */
+
+.navbar-link::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: 0;
+
+    width: 0;
+
+    height: 2px;
+
+    background: #f6d365;
+
+    border-radius: 10px;
+
+    transition:
+        width 0.25s ease;
+}
+
+
+.navbar-link:hover::after {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ADMIN LOGIN
+========================================================= */
+
+.navbar-admin-login {
+    color: #f6d365;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    padding: 9px 16px;
+
+    border: 1px solid #f6d365;
+
+    border-radius: 7px;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+}
+
+
+.navbar-admin-login:hover {
+    background: #f6d365;
+
+    color: #111111;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ADMIN NAME
+========================================================= */
+
+.navbar-admin-name {
+    color: #f6d365;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.2px;
+
+    white-space: nowrap;
+
+    padding: 8px 12px;
+
+    border-left: 1px solid #333333;
+}
+
+
+/* =========================================================
+   LOGOUT BUTTON
+========================================================= */
+
+.navbar-logout {
+    border: 1px solid #dc3545;
+
+    background: transparent;
+
+    color: #ff6b75;
+
+    padding: 8px 16px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+}
+
+
+.navbar-logout:hover {
+    background: #dc3545;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+.navbar-logout:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   HAMBURGER
+========================================================= */
+
+.navbar-toggle {
+    display: none;
+
+    width: 42px;
+
+    height: 42px;
+
+    padding: 0;
+
+    border: 1px solid #444444;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.navbar-toggle span {
+    display: block;
+
+    width: 21px;
+
+    height: 2px;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+
+.navbar-toggle:hover {
+    border-color: #f6d365;
+}
+
+
+.navbar-toggle:hover span {
+    background: #f6d365;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .navbar-container {
+        gap: 22px;
+
+        padding: 0 20px;
+    }
+
+
+    .navbar-link {
+        font-size: 14px;
+    }
+
+
+    .navbar-admin-login {
+        font-size: 14px;
+
+        padding: 8px 13px;
+    }
+
+
+    .navbar-admin-name {
+        font-size: 13px;
+
+        padding: 7px 9px;
+    }
+
+
+    .navbar-logout {
+        font-size: 13px;
+
+        padding: 7px 12px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .main-navbar {
+        position: sticky;
+
+        top: 0;
+    }
+
+
+    .navbar-container {
+        min-height: 64px;
+
+        padding: 11px 16px;
+
+        justify-content: space-between;
+
+        flex-wrap: wrap;
+
+        gap: 0;
+    }
+
+
+    /* Show hamburger */
+
+    .navbar-toggle {
+        display: flex;
+    }
+
+
+    /* Mobile menu */
+
+    .navbar-menu {
+        width: 100%;
+
+        display: none;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 5px;
+
+        padding: 14px 0 5px;
+
+        border-top: 1px solid #292929;
+
+        margin-top: 10px;
+    }
+
+
+    .navbar-menu.open {
+        display: flex;
+    }
+
+
+    .navbar-link {
+        width: 100%;
+
+        padding: 12px 10px;
+
+        border-radius: 6px;
+
+        font-size: 15px;
+    }
+
+
+    .navbar-link:hover {
+        background: rgba(
+            246,
+            211,
+            101,
+            0.08
+        );
+    }
+
+
+    .navbar-link::after {
+        display: none;
+    }
+
+
+    .navbar-admin-login {
+        width: 100%;
+
+        text-align: center;
+
+        margin-top: 5px;
+    }
+
+
+    .navbar-admin-name {
+        width: 100%;
+
+        padding: 12px 10px;
+
+        border-left: none;
+
+        border-bottom: 1px solid #292929;
+    }
+
+
+    .navbar-logout {
+        width: 100%;
+
+        margin-top: 5px;
+
+        padding: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .navbar-container {
+        padding-left: 12px;
+
+        padding-right: 12px;
+    }
+
+
+    .navbar-toggle {
+        width: 40px;
+
+        height: 40px;
+    }
+
+
+    .navbar-link {
+        font-size: 14px;
+    }
+
+
+    .navbar-admin-login {
+        font-size: 14px;
+    }
+
+}

@@ -1,32 +1,134 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
+import {
+    Link,
+    useNavigate
+} from "react-router-dom";
+
+import "../styles/Navbar.css";
+
 
 const Navbar = () => {
 
+    const navigate = useNavigate();
+
+
+    const token =
+        localStorage.getItem("token");
+
+
+    const storedUser =
+        localStorage.getItem("user");
+
+
+    let user = null;
+
+
+    try {
+
+        user = storedUser
+            ? JSON.parse(storedUser)
+            : null;
+
+    } catch (error) {
+
+        user = null;
+    }
+
+
+    const handleLogout = () => {
+
+        localStorage.removeItem("token");
+
+        localStorage.removeItem("user");
+
+
+        navigate(
+            "/",
+            {
+                replace: true
+            }
+        );
+
+    };
+
+
     return (
 
-        <nav className="navbar bg-black py-3">
+        <nav className="main-navbar">
 
-            <div className="container">
+            <div className="container navbar-container">
 
-                <div className="d-flex justify-content-center gap-4 w-100">
+
+                {/* HOME */}
+
+                <Link
+                    to="/"
+                    className="navbar-link"
+                >
+                    Home
+                </Link>
+
+
+                {/* SAREES */}
+
+                <Link
+                    to="/sarees"
+                    className="navbar-link"
+                >
+                    Sarees
+                </Link>
+
+
+                {/* JEWELLERY */}
+
+                <Link
+                    to="/jewellery"
+                    className="navbar-link"
+                >
+                    Jewellery
+                </Link>
+
+
+                {/* =================================
+                    NOT LOGGED IN
+                ================================= */}
+
+                {!token || !user ? (
 
                     <Link
-                        to="/sarees"
-                        className="text-decoration-none text-white fw-semibold"
+                        to="/login"
+                        className="navbar-admin-login"
                     >
-                        Sarees
+                        Admin Login
                     </Link>
 
-                    <Link
-                        to="/jewellery"
-                        className="text-decoration-none text-white fw-semibold"
-                    >
-                        Jewellery
-                    </Link>
+                ) : (
+
+                    /* =================================
+                       ADMIN LOGGED IN
+                    ================================= */
+
+                    <>
+
+                        <span className="navbar-admin-name">
+
+                            Admin: {user.name}
+
+                        </span>
 
 
-                </div>
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="navbar-logout"
+                        >
+                            Logout
+                        </button>
+
+                    </>
+
+                )}
 
             </div>
 
@@ -34,5 +136,6 @@ const Navbar = () => {
 
     );
 };
+
 
 export default Navbar;

@@ -1,0 +1,179 @@
+/* =========================================
+   HOME PAGE
+========================================= */
+
+.home-page {
+    min-height: calc(100vh - 56px);
+    background:
+        linear-gradient(
+            135deg,
+            #111111 0%,
+            #1c1c1c 45%,
+            #000000 100%
+        );
+
+    color: white;
+
+    padding: 60px 20px;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.home-hero {
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    text-align: center;
+
+    padding: 80px 20px 60px;
+}
+
+
+.home-hero h1 {
+    margin: 0;
+
+    font-size: 56px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #f6d365;
+}
+
+
+.home-hero p {
+    margin-top: 15px;
+
+    font-size: 24px;
+
+    color: #ffffff;
+}
+
+
+.home-description {
+    max-width: 600px;
+
+    margin: 20px auto 0 !important;
+
+    font-size: 17px !important;
+
+    line-height: 1.7;
+
+    color: #cccccc !important;
+}
+
+
+/* =========================================
+   CATEGORY SECTION
+========================================= */
+
+.home-categories {
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 25px;
+}
+
+
+.home-card {
+    padding: 35px;
+
+    text-align: center;
+
+    border: 1px solid #444;
+
+    border-radius: 15px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease;
+}
+
+
+.home-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #f6d365;
+
+    background: rgba(246, 211, 101, 0.08);
+}
+
+
+.home-card h2 {
+    color: #f6d365;
+
+    margin-bottom: 10px;
+}
+
+
+.home-card p {
+    color: #cccccc;
+
+    margin: 0;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .home-page {
+        padding: 30px 15px;
+    }
+
+
+    .home-hero {
+        padding: 50px 10px 40px;
+    }
+
+
+    .home-hero h1 {
+        font-size: 38px;
+    }
+
+
+    .home-hero p {
+        font-size: 20px;
+    }
+
+
+    .home-categories {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .home-hero h1 {
+        font-size: 32px;
+    }
+
+
+    .home-hero p {
+        font-size: 18px;
+    }
+
+
+    .home-description {
+        font-size: 15px !important;
+    }
+
+}
