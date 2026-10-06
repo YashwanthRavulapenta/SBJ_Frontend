@@ -23,6 +23,7 @@ import Layout from "./Layout.jsx";
 import AdminRoute
     from "./components/AdminRoute.jsx";
 
+import AdminOrders from "./pages/AdminOrders";
 
 import Home
     from "./pages/Home.jsx";
@@ -134,6 +135,11 @@ const routes =
                             path: "jewelleryForm",
 
                             element: <JewelleryForm />
+                        },
+
+                        {
+                            path: "/orders",
+                            element: <AdminOrders />
                         },
 
 

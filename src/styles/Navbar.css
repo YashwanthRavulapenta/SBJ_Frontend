@@ -46,6 +46,8 @@
 
     gap: 30px;
 
+    box-sizing: border-box;
+
 }
 
 
@@ -110,6 +112,12 @@
 
     position: relative;
 
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
     color: #ffffff;
 
     text-decoration: none;
@@ -137,7 +145,9 @@
 }
 
 
-/* GOLD UNDERLINE */
+/* =========================================================
+   GOLD UNDERLINE
+========================================================= */
 
 .navbar-link::after {
 
@@ -166,6 +176,67 @@
 .navbar-link:hover::after {
 
     width: 100%;
+
+}
+
+
+/* =========================================================
+   ACTIVE ADMIN ORDERS LINK
+========================================================= */
+
+.navbar-orders-link.active {
+
+    color: #f6d365;
+
+}
+
+
+.navbar-orders-link.active::after {
+
+    width: 100%;
+
+}
+
+
+/* =========================================================
+   ORDER COUNT BADGE
+========================================================= */
+
+.navbar-order-count {
+
+    min-width: 21px;
+
+    height: 21px;
+
+    padding: 0 6px;
+
+    box-sizing: border-box;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50px;
+
+    background: #f6d365;
+
+    color: #111111;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    box-shadow:
+        0 0 8px rgba(
+            246,
+            211,
+            101,
+            0.25
+        );
 
 }
 
@@ -251,7 +322,9 @@
 }
 
 
-/* ONLINE DOT */
+/* =========================================================
+   ONLINE DOT
+========================================================= */
 
 .admin-dot {
 
@@ -266,7 +339,12 @@
     display: inline-block;
 
     box-shadow:
-        0 0 6px rgba(74, 222, 128, 0.7);
+        0 0 6px rgba(
+            74,
+            222,
+            128,
+            0.7
+        );
 
 }
 
@@ -475,6 +553,17 @@
 
     }
 
+
+    .navbar-order-count {
+
+        min-width: 19px;
+
+        height: 19px;
+
+        font-size: 10px;
+
+    }
+
 }
 
 
@@ -567,7 +656,9 @@
     }
 
 
-    /* OPEN */
+    /* -----------------------------------------
+       OPEN
+    ----------------------------------------- */
 
     .navbar-menu.open {
 
@@ -593,6 +684,8 @@
 
         box-sizing: border-box;
 
+        justify-content: flex-start;
+
     }
 
 
@@ -612,6 +705,23 @@
     .navbar-link::after {
 
         display: none;
+
+    }
+
+
+    /* -----------------------------------------
+       ORDER COUNT
+    ----------------------------------------- */
+
+    .navbar-order-count {
+
+        margin-left: auto;
+
+        min-width: 23px;
+
+        height: 23px;
+
+        font-size: 11px;
 
     }
 
