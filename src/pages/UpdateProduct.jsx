@@ -13,6 +13,10 @@ import {
 import "../styles/ProductForm.css";
 
 
+// ==========================================
+// BACKEND BASE URL
+// ==========================================
+
 const BASE_URL =
     "https://sjb-backend-01lg.onrender.com";
 
@@ -24,9 +28,7 @@ const UpdateProduct = () => {
         id
     } = useParams();
 
-
     const navigate = useNavigate();
-
 
     const isSaree =
         type === "sarees";
@@ -70,7 +72,7 @@ const UpdateProduct = () => {
 
 
     // ==========================================
-    // GET PRODUCT
+    // GET EXISTING PRODUCT
     // ==========================================
 
     useEffect(() => {
@@ -81,12 +83,10 @@ const UpdateProduct = () => {
 
                 setLoading(true);
 
-
                 const response =
                     await axios.get(
                         `${BASE_URL}/api/${type}/${id}`
                     );
-
 
                 const product =
                     response.data;
@@ -105,12 +105,11 @@ const UpdateProduct = () => {
                     );
 
                     return;
-
                 }
 
 
                 // ==================================
-                // SET EXISTING VALUES
+                // SET EXISTING PRODUCT DATA
                 // ==================================
 
                 setFormData({
@@ -150,10 +149,15 @@ const UpdateProduct = () => {
                     error
                 );
 
-
                 alert(
                     error.response?.data?.message ||
                     "Failed to load product"
+                );
+
+                navigate(
+                    isSaree
+                        ? "/sarees"
+                        : "/jewellery"
                 );
 
 
@@ -177,7 +181,7 @@ const UpdateProduct = () => {
 
 
     // ==========================================
-    // HANDLE INPUT
+    // HANDLE INPUT CHANGE
     // ==========================================
 
     const handleChange = (e) => {
@@ -200,7 +204,7 @@ const UpdateProduct = () => {
 
 
     // ==========================================
-    // IMAGE
+    // HANDLE IMAGE
     // ==========================================
 
     const handleImageChange = (e) => {
@@ -209,7 +213,9 @@ const UpdateProduct = () => {
             e.target.files[0];
 
 
-        if (!file) return;
+        if (!file) {
+            return;
+        }
 
 
         setFormData((prev) => ({
@@ -229,7 +235,7 @@ const UpdateProduct = () => {
 
 
     // ==========================================
-    // AVAILABILITY
+    // HANDLE AVAILABILITY
     // ==========================================
 
     const handleAvailabilityChange =
@@ -247,7 +253,7 @@ const UpdateProduct = () => {
 
 
     // ==========================================
-    // UPDATE
+    // UPDATE PRODUCT
     // ==========================================
 
     const handleSubmit = async (e) => {
@@ -259,6 +265,40 @@ const UpdateProduct = () => {
 
             setUpdating(true);
 
+
+            // ==================================
+            // GET JWT TOKEN
+            // ==================================
+
+            const token =
+                localStorage.getItem("token");
+
+
+            console.log(
+                "Token exists:",
+                !!token
+            );
+
+
+            // ==================================
+            // CHECK LOGIN
+            // ==================================
+
+            if (!token) {
+
+                alert(
+                    "Please login first"
+                );
+
+                navigate("/login");
+
+                return;
+            }
+
+
+            // ==================================
+            // CREATE FORM DATA
+            // ==================================
 
             const data =
                 new FormData();
@@ -290,7 +330,10 @@ const UpdateProduct = () => {
             );
 
 
-            // Saree only
+            // ==================================
+            // SAREE COLOR
+            // ==================================
+
             if (isSaree) {
 
                 data.append(
@@ -301,7 +344,10 @@ const UpdateProduct = () => {
             }
 
 
-            // New image only
+            // ==================================
+            // NEW IMAGE
+            // ==================================
+
             if (formData.image) {
 
                 data.append(
@@ -312,6 +358,10 @@ const UpdateProduct = () => {
             }
 
 
+            // ==================================
+            // UPDATE PRODUCT API
+            // ==================================
+
             const response =
                 await axios.put(
 
@@ -321,13 +371,22 @@ const UpdateProduct = () => {
 
                     {
                         headers: {
-                            "Content-Type":
-                                "multipart/form-data"
+
+                            // IMPORTANT
+                            // SEND JWT TOKEN
+                            Authorization:
+                                `Bearer ${token}`
+
                         }
+
                     }
 
                 );
 
+
+            // ==================================
+            // SUCCESS RESPONSE
+            // ==================================
 
             console.log(
                 "Update response:",
@@ -336,13 +395,16 @@ const UpdateProduct = () => {
 
 
             alert(
-                `${
-                    isSaree
-                        ? "Saree"
-                        : "Jewellery"
+                `${isSaree
+                    ? "Saree"
+                    : "Jewellery"
                 } updated successfully`
             );
 
+
+            // ==================================
+            // GO BACK TO PRODUCT LIST
+            // ==================================
 
             navigate(
                 isSaree
@@ -360,17 +422,65 @@ const UpdateProduct = () => {
 
 
             console.error(
+                "Status:",
+                error.response?.status
+            );
+
+
+            console.error(
                 "Backend response:",
                 error.response?.data
             );
 
 
+            // ==================================
+            // UNAUTHORIZED
+            // ==================================
+
+            if (
+                error.response?.status === 401
+            ) {
+
+                alert(
+                    "Your login session is invalid or expired. Please login again."
+                );
+
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+
+                navigate(
+                    "/login",
+                    {
+                        replace: true,
+
+                        state: {
+                            message:
+                                "Please login again."
+                        }
+
+                    }
+                );
+
+
+                return;
+            }
+
+
+            // ==================================
+            // OTHER ERROR
+            // ==================================
+
             alert(
-
                 error.response?.data?.message ||
-
                 "Failed to update product"
-
             );
 
 
@@ -420,14 +530,20 @@ const UpdateProduct = () => {
                 <div>
 
                     <h1>
+
                         Update{" "}
+
                         {isSaree
                             ? "Saree"
                             : "Jewellery"}
+
                     </h1>
 
+
                     <p>
+
                         Edit product information
+
                     </p>
 
                 </div>
@@ -444,7 +560,9 @@ const UpdateProduct = () => {
                         )
                     }
                 >
+
                     ← Back
+
                 </button>
 
             </div>
@@ -460,19 +578,25 @@ const UpdateProduct = () => {
             >
 
 
-                {/* IMAGE */}
+                {/* ==================================
+                    PRODUCT IMAGE
+                ================================== */}
 
                 <div className="product-form-group">
 
                     <label className="product-form-label">
+
                         Product Image
+
                     </label>
 
 
                     <input
                         type="file"
                         accept="image/*"
-                        onChange={handleImageChange}
+                        onChange={
+                            handleImageChange
+                        }
                     />
 
 
@@ -494,22 +618,28 @@ const UpdateProduct = () => {
 
 
                     <small>
+
                         Select a new image only if
                         you want to replace the
                         current image.
+
                     </small>
 
                 </div>
 
 
-                {/* NAME */}
+                {/* ==================================
+                    NAME
+                ================================== */}
 
                 <div className="product-form-group">
 
                     <label>
+
                         {isSaree
                             ? "Saree Name"
                             : "Jewellery Name"}
+
                     </label>
 
 
@@ -525,12 +655,16 @@ const UpdateProduct = () => {
                 </div>
 
 
-                {/* CATEGORY */}
+                {/* ==================================
+                    CATEGORY
+                ================================== */}
 
                 <div className="product-form-group">
 
                     <label>
+
                         Category
+
                     </label>
 
 
@@ -542,7 +676,9 @@ const UpdateProduct = () => {
                     >
 
                         <option value="">
+
                             Select Category
+
                         </option>
 
 
@@ -551,23 +687,37 @@ const UpdateProduct = () => {
                             <>
 
                                 <option value="Cotton Sarees">
+
                                     Cotton Sarees
+
                                 </option>
+
 
                                 <option value="Chiffon Saree">
+
                                     Chiffon Saree
+
                                 </option>
+
 
                                 <option value="Silk Sarees">
+
                                     Silk Sarees
+
                                 </option>
+
 
                                 <option value="Georgette Saree">
+
                                     Georgette Saree
+
                                 </option>
 
+
                                 <option value="Kanjivaram Saree">
+
                                     Kanjivaram Saree
+
                                 </option>
 
                             </>
@@ -577,27 +727,44 @@ const UpdateProduct = () => {
                             <>
 
                                 <option value="Necklace">
+
                                     Necklace
+
                                 </option>
+
 
                                 <option value="Earrings">
+
                                     Earrings
+
                                 </option>
+
 
                                 <option value="Bangles">
+
                                     Bangles
+
                                 </option>
+
 
                                 <option value="Bracelet">
+
                                     Bracelet
+
                                 </option>
+
 
                                 <option value="Ring">
+
                                     Ring
+
                                 </option>
 
+
                                 <option value="Jewellery Set">
+
                                     Jewellery Set
+
                                 </option>
 
                             </>
@@ -609,14 +776,18 @@ const UpdateProduct = () => {
                 </div>
 
 
-                {/* COLOR - SAREE */}
+                {/* ==================================
+                    COLOR - SAREE ONLY
+                ================================== */}
 
                 {isSaree && (
 
                     <div className="product-form-group">
 
                         <label>
+
                             Color
+
                         </label>
 
 
@@ -634,19 +805,25 @@ const UpdateProduct = () => {
                 )}
 
 
-                {/* PRICE */}
+                {/* ==================================
+                    PRICE
+                ================================== */}
 
                 <div className="product-form-group">
 
                     <label>
+
                         Price
+
                     </label>
 
 
                     <div className="price-input-wrapper">
 
                         <span className="price-symbol">
+
                             ₹
+
                         </span>
 
 
@@ -665,12 +842,16 @@ const UpdateProduct = () => {
                 </div>
 
 
-                {/* AVAILABILITY */}
+                {/* ==================================
+                    AVAILABILITY
+                ================================== */}
 
                 <div className="product-form-group">
 
                     <label>
+
                         Availability
+
                     </label>
 
 
@@ -692,8 +873,11 @@ const UpdateProduct = () => {
                                 }
                             />
 
+
                             <span>
+
                                 Available
+
                             </span>
 
                         </label>
@@ -714,8 +898,11 @@ const UpdateProduct = () => {
                                 }
                             />
 
+
                             <span>
+
                                 Sold Out
+
                             </span>
 
                         </label>
@@ -726,7 +913,9 @@ const UpdateProduct = () => {
                 </div>
 
 
-                {/* BUTTONS */}
+                {/* ==================================
+                    BUTTONS
+                ================================== */}
 
                 <div className="product-form-footer">
 
@@ -741,7 +930,9 @@ const UpdateProduct = () => {
                             )
                         }
                     >
+
                         Cancel
+
                     </button>
 
 
@@ -759,11 +950,14 @@ const UpdateProduct = () => {
 
                 </div>
 
+
             </form>
 
         </div>
 
     );
+
 };
+
 
 export default UpdateProduct;

@@ -1,16 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {
+    useEffect,
+    useState
+} from "react";
+
+import {
+    Link,
+    useNavigate
+} from "react-router-dom";
+
 import axios from "axios";
+
 import "../styles/AdminProducts.css";
 
-const BASE_URL = "https://sjb-backend-01lg.onrender.com";
+
+// ==========================================
+// BACKEND BASE URL
+// ==========================================
+
+const BASE_URL =
+    "https://sjb-backend-01lg.onrender.com";
+
 
 const Jewellery = () => {
 
-    const [jewellery, setJewellery] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [jewellery, setJewellery] =
+        useState([]);
 
-    const navigate = useNavigate();
+    const [loading, setLoading] =
+        useState(true);
+
+    const navigate =
+        useNavigate();
 
 
     // ==========================================
@@ -23,11 +43,17 @@ const Jewellery = () => {
 
             setLoading(true);
 
-            const response = await axios.get(
-                `${BASE_URL}/api/jewellery`
+
+            const response =
+                await axios.get(
+                    `${BASE_URL}/api/jewellery`
+                );
+
+
+            setJewellery(
+                response.data
             );
 
-            setJewellery(response.data);
 
         } catch (error) {
 
@@ -35,6 +61,22 @@ const Jewellery = () => {
                 "Error fetching jewellery:",
                 error
             );
+
+
+            if (
+                error.response?.status === 401
+            ) {
+
+                alert(
+                    "Please login first."
+                );
+
+
+                navigate(
+                    "/login"
+                );
+
+            }
 
         } finally {
 
@@ -62,23 +104,86 @@ const Jewellery = () => {
 
     const handleDelete = async (id) => {
 
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this jewellery?"
-        );
+        const confirmDelete =
+            window.confirm(
+                "Are you sure you want to delete this jewellery?"
+            );
 
-        if (!confirmDelete) return;
+
+        if (!confirmDelete) {
+            return;
+        }
 
 
         try {
 
-            await axios.delete(
-                `${BASE_URL}/api/jewellery/${id}`
+            // ==================================
+            // GET JWT TOKEN
+            // ==================================
+
+            const token =
+                localStorage.getItem(
+                    "token"
+                );
+
+
+            // ==================================
+            // CHECK LOGIN
+            // ==================================
+
+            if (!token) {
+
+                alert(
+                    "Please login first."
+                );
+
+
+                navigate(
+                    "/login"
+                );
+
+
+                return;
+
+            }
+
+
+            // ==================================
+            // DELETE REQUEST
+            // ==================================
+
+            const response =
+                await axios.delete(
+
+                    `${BASE_URL}/api/jewellery/${id}`,
+
+                    {
+                        headers: {
+
+                            Authorization:
+                                `Bearer ${token}`
+
+                        }
+
+                    }
+
+                );
+
+
+            console.log(
+                "Delete response:",
+                response.data
             );
 
 
+            // ==================================
+            // REMOVE FROM UI
+            // ==================================
+
             setJewellery((prev) =>
                 prev.filter(
-                    (item) => item._id !== id
+                    (item) =>
+                        item._id !== id
                 )
             );
 
@@ -95,6 +200,62 @@ const Jewellery = () => {
                 error
             );
 
+
+            console.error(
+                "Status:",
+                error.response?.status
+            );
+
+
+            console.error(
+                "Backend response:",
+                error.response?.data
+            );
+
+
+            // ==================================
+            // UNAUTHORIZED
+            // ==================================
+
+            if (
+                error.response?.status === 401
+            ) {
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+
+                alert(
+                    "Your login session is invalid or expired. Please login again."
+                );
+
+
+                navigate(
+                    "/login",
+                    {
+                        replace: true,
+
+                        state: {
+                            message:
+                                "Please login again."
+                        }
+
+                    }
+                );
+
+
+                return;
+            }
+
+
+            // ==================================
+            // OTHER ERROR
+            // ==================================
 
             alert(
                 error.response?.data?.message ||
@@ -127,8 +288,11 @@ const Jewellery = () => {
                         Jewellery
                     </h1>
 
+
                     <p className="admin-label">
+
                         Manage your jewellery products
+
                     </p>
 
                 </div>
@@ -140,16 +304,22 @@ const Jewellery = () => {
                         to="/jewelleryForm"
                         className="add-product-btn"
                     >
+
                         + Add Jewellery
+
                     </Link>
 
 
                     <button
                         type="button"
                         className="back-btn"
-                        onClick={() => navigate(-1)}
+                        onClick={() =>
+                            navigate(-1)
+                        }
                     >
+
                         Back
+
                     </button>
 
                 </div>
@@ -185,8 +355,12 @@ const Jewellery = () => {
                             No Jewellery Found
                         </h2>
 
+
                         <p>
-                            Add your first jewellery product.
+
+                            Add your first jewellery
+                            product.
+
                         </p>
 
 
@@ -194,7 +368,9 @@ const Jewellery = () => {
                             to="/jewelleryForm"
                             className="add-product-btn"
                         >
+
                             Add Jewellery
+
                         </Link>
 
                     </div>
@@ -211,137 +387,142 @@ const Jewellery = () => {
 
                     <div className="products-grid">
 
-                        {jewellery.map((item) => (
+                        {jewellery.map(
+                            (item) => (
 
-                            <div
-                                className="admin-product-card"
-                                key={item._id}
-                            >
+                                <div
+                                    className="admin-product-card"
+                                    key={item._id}
+                                >
 
 
-                                {/* ==================================
-                                    IMAGE
-                                ================================== */}
+                                    {/* ================================
+                                        IMAGE
+                                    ================================= */}
 
-                                <div className="product-image-wrapper">
+                                    <div className="product-image-wrapper">
 
-                                    {item.image ? (
+                                        {item.image ? (
 
-                                        <img
-                                            src={item.image}
-                                            alt={item.name}
-                                            className="admin-product-image"
-                                        />
+                                            <img
+                                                src={
+                                                    item.image
+                                                }
+                                                alt={
+                                                    item.name
+                                                }
+                                                className="admin-product-image"
+                                            />
 
-                                    ) : (
+                                        ) : (
 
-                                        <div className="no-image">
+                                            <div className="no-image">
 
-                                            No Image
+                                                No Image
+
+                                            </div>
+
+                                        )}
+
+
+                                        {/* SOLD OUT */}
+
+                                        {item.isAvailable === false && (
+
+                                            <div className="sold-out-ribbon">
+
+                                                SOLD OUT
+
+                                            </div>
+
+                                        )}
+
+                                    </div>
+
+
+                                    {/* ================================
+                                        INFO
+                                    ================================= */}
+
+                                    <div className="product-info">
+
+                                        <span className="product-category">
+
+                                            {item.category}
+
+                                        </span>
+
+
+                                        <h3>
+
+                                            {item.name}
+
+                                        </h3>
+
+
+                                        <div className="product-meta">
+
+                                            ₹{item.price}
 
                                         </div>
 
-                                    )}
+                                    </div>
 
 
-                                    {/* SOLD OUT */}
+                                    {/* ================================
+                                        ACTIONS
+                                    ================================= */}
 
-                                    {item.isAvailable === false && (
-
-                                        <div className="sold-out-ribbon">
-
-                                            SOLD OUT
-
-                                        </div>
-
-                                    )}
-
-                                </div>
+                                    <div className="product-actions">
 
 
-                                {/* ==================================
-                                    INFO
-                                ================================== */}
+                                        {/* VIEW */}
 
-                                <div className="product-info">
+                                        <Link
+                                            to={`/admin/view/jewellery/${item._id}`}
+                                            className="view-btn"
+                                        >
 
+                                            View
 
-                                    <span className="product-category">
-
-                                        {item.category}
-
-                                    </span>
+                                        </Link>
 
 
-                                    <h3>
+                                        {/* UPDATE */}
 
-                                        {item.name}
+                                        <Link
+                                            to={`/admin/update/jewellery/${item._id}`}
+                                            className="edit-btn"
+                                        >
 
-                                    </h3>
+                                            Update
+
+                                        </Link>
 
 
-                                    <div className="product-meta">
+                                        {/* DELETE */}
 
-                                        ₹{item.price}
+                                        <button
+                                            type="button"
+                                            className="delete-btn"
+                                            onClick={() =>
+                                                handleDelete(
+                                                    item._id
+                                                )
+                                            }
+                                        >
+
+                                            Delete
+
+                                        </button>
+
 
                                     </div>
 
                                 </div>
 
-
-                                {/* ==================================
-                                    ACTIONS
-                                ================================== */}
-
-                                <div className="product-actions">
-
-
-                                    {/* VIEW */}
-
-                                    <Link
-                                        to={`/admin/view/jewellery/${item._id}`}
-                                        className="view-btn"
-                                    >
-
-                                        View
-
-                                    </Link>
-
-
-                                    {/* UPDATE */}
-
-                                    <Link
-                                        to={`/admin/update/jewellery/${item._id}`}
-                                        className="edit-btn"
-                                    >
-
-                                        Update
-
-                                    </Link>
-
-
-                                    {/* DELETE */}
-
-                                    <button
-                                        type="button"
-                                        className="delete-btn"
-                                        onClick={() =>
-                                            handleDelete(
-                                                item._id
-                                            )
-                                        }
-                                    >
-
-                                        Delete
-
-                                    </button>
-
-
-                                </div>
-
-                            </div>
-
-                        ))}
+                            )
+                        )}
 
                     </div>
 

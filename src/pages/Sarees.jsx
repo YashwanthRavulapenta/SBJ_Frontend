@@ -1,16 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {
+    useEffect,
+    useState
+} from "react";
+
+import {
+    Link,
+    useNavigate
+} from "react-router-dom";
+
 import axios from "axios";
+
 import "../styles/AdminProducts.css";
 
-const BASE_URL = "https://sjb-backend-01lg.onrender.com";
+
+// ==========================================
+// BACKEND BASE URL
+// ==========================================
+
+const BASE_URL =
+    "https://sjb-backend-01lg.onrender.com";
+
 
 const Sarees = () => {
 
-    const [sarees, setSarees] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [sarees, setSarees] =
+        useState([]);
 
-    const navigate = useNavigate();
+    const [loading, setLoading] =
+        useState(true);
+
+    const navigate =
+        useNavigate();
 
 
     // ==========================================
@@ -23,11 +43,17 @@ const Sarees = () => {
 
             setLoading(true);
 
-            const response = await axios.get(
-                `${BASE_URL}/api/sarees`
+
+            const response =
+                await axios.get(
+                    `${BASE_URL}/api/sarees`
+                );
+
+
+            setSarees(
+                response.data
             );
 
-            setSarees(response.data);
 
         } catch (error) {
 
@@ -36,13 +62,33 @@ const Sarees = () => {
                 error
             );
 
+
+            if (
+                error.response?.status === 401
+            ) {
+
+                alert(
+                    "Please login first."
+                );
+
+                navigate(
+                    "/login"
+                );
+
+            }
+
         } finally {
 
             setLoading(false);
 
         }
+
     };
 
+
+    // ==========================================
+    // LOAD SAREES
+    // ==========================================
 
     useEffect(() => {
 
@@ -57,23 +103,83 @@ const Sarees = () => {
 
     const handleDelete = async (id) => {
 
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this saree?"
-        );
+        const confirmDelete =
+            window.confirm(
+                "Are you sure you want to delete this saree?"
+            );
 
-        if (!confirmDelete) return;
+
+        if (!confirmDelete) {
+            return;
+        }
 
 
         try {
 
-            await axios.delete(
-                `${BASE_URL}/api/sarees/${id}`
+            // ==================================
+            // GET JWT TOKEN
+            // ==================================
+
+            const token =
+                localStorage.getItem(
+                    "token"
+                );
+
+
+            // ==================================
+            // CHECK LOGIN
+            // ==================================
+
+            if (!token) {
+
+                alert(
+                    "Please login first."
+                );
+
+                navigate(
+                    "/login"
+                );
+
+                return;
+            }
+
+
+            // ==================================
+            // DELETE REQUEST
+            // ==================================
+
+            const response =
+                await axios.delete(
+
+                    `${BASE_URL}/api/sarees/${id}`,
+
+                    {
+                        headers: {
+
+                            Authorization:
+                                `Bearer ${token}`
+
+                        }
+
+                    }
+
+                );
+
+
+            console.log(
+                "Delete response:",
+                response.data
             );
 
 
+            // ==================================
+            // REMOVE FROM UI
+            // ==================================
+
             setSarees((prev) =>
                 prev.filter(
-                    (item) => item._id !== id
+                    (item) =>
+                        item._id !== id
                 )
             );
 
@@ -90,12 +196,70 @@ const Sarees = () => {
                 error
             );
 
+
+            console.error(
+                "Status:",
+                error.response?.status
+            );
+
+
+            console.error(
+                "Backend response:",
+                error.response?.data
+            );
+
+
+            // ==================================
+            // UNAUTHORIZED
+            // ==================================
+
+            if (
+                error.response?.status === 401
+            ) {
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+
+                alert(
+                    "Your login session is invalid or expired. Please login again."
+                );
+
+
+                navigate(
+                    "/login",
+                    {
+                        replace: true,
+
+                        state: {
+                            message:
+                                "Please login again."
+                        }
+
+                    }
+                );
+
+
+                return;
+            }
+
+
+            // ==================================
+            // OTHER ERROR
+            // ==================================
+
             alert(
                 error.response?.data?.message ||
                 "Failed to delete saree"
             );
 
         }
+
     };
 
 
@@ -121,7 +285,9 @@ const Sarees = () => {
                     </h1>
 
                     <p className="admin-label">
+
                         Manage your saree products
+
                     </p>
 
                 </div>
@@ -133,16 +299,22 @@ const Sarees = () => {
                         to="/sareeForm"
                         className="add-product-btn"
                     >
+
                         + Add Saree
+
                     </Link>
 
 
                     <button
                         type="button"
                         className="back-btn"
-                        onClick={() => navigate(-1)}
+                        onClick={() =>
+                            navigate(-1)
+                        }
                     >
+
                         Back
+
                     </button>
 
                 </div>
@@ -157,7 +329,9 @@ const Sarees = () => {
             {loading && (
 
                 <div className="admin-loading">
+
                     Loading sarees...
+
                 </div>
 
             )}
@@ -185,7 +359,9 @@ const Sarees = () => {
                             to="/sareeForm"
                             className="add-product-btn"
                         >
+
                             Add Saree
+
                         </Link>
 
                     </div>
@@ -202,120 +378,151 @@ const Sarees = () => {
 
                     <div className="products-grid">
 
-                        {sarees.map((saree) => (
+                        {sarees.map(
+                            (saree) => (
 
-                            <div
-                                className="admin-product-card"
-                                key={saree._id}
-                            >
+                                <div
+                                    className="admin-product-card"
+                                    key={saree._id}
+                                >
 
 
-                                {/* ==================================
-                                    IMAGE
-                                ================================== */}
+                                    {/* ================================
+                                        IMAGE
+                                    ================================= */}
 
-                                <div className="product-image-wrapper">
+                                    <div className="product-image-wrapper">
 
-                                    {saree.image ? (
+                                        {saree.image ? (
 
-                                        <img
-                                            src={saree.image}
-                                            alt={saree.name}
-                                            className="admin-product-image"
-                                        />
+                                            <img
+                                                src={
+                                                    saree.image
+                                                }
+                                                alt={
+                                                    saree.name
+                                                }
+                                                className="admin-product-image"
+                                            />
 
-                                    ) : (
+                                        ) : (
 
-                                        <div className="no-image">
-                                            No Image
+                                            <div className="no-image">
+
+                                                No Image
+
+                                            </div>
+
+                                        )}
+
+
+                                        {/* SOLD OUT */}
+
+                                        {saree.isAvailable === false && (
+
+                                            <div className="sold-out-ribbon">
+
+                                                SOLD OUT
+
+                                            </div>
+
+                                        )}
+
+                                    </div>
+
+
+                                    {/* ================================
+                                        INFO
+                                    ================================= */}
+
+                                    <div className="product-info">
+
+                                        <span className="product-category">
+
+                                            {saree.category}
+
+                                        </span>
+
+
+                                        <h3>
+
+                                            {saree.name}
+
+                                        </h3>
+
+
+                                        <p>
+
+                                            Color:{" "}
+
+                                            {saree.color}
+
+                                        </p>
+
+
+                                        <div className="product-meta">
+
+                                            ₹{saree.price}
+
                                         </div>
 
-                                    )}
+                                    </div>
 
 
-                                    {/* SOLD OUT */}
+                                    {/* ================================
+                                        ACTIONS
+                                    ================================= */}
 
-                                    {saree.isAvailable === false && (
-
-                                        <div className="sold-out-ribbon">
-                                            SOLD OUT
-                                        </div>
-
-                                    )}
-
-                                </div>
+                                    <div className="product-actions">
 
 
-                                {/* ==================================
-                                    INFO
-                                ================================== */}
+                                        {/* VIEW */}
 
-                                <div className="product-info">
+                                        <Link
+                                            to={`/admin/view/sarees/${saree._id}`}
+                                            className="view-btn"
+                                        >
 
-                                    <span className="product-category">
-                                        {saree.category}
-                                    </span>
+                                            View
 
-
-                                    <h3>
-                                        {saree.name}
-                                    </h3>
+                                        </Link>
 
 
-                                    <p>
-                                        Color:{" "}
-                                        {saree.color}
-                                    </p>
+                                        {/* UPDATE */}
+
+                                        <Link
+                                            to={`/admin/update/sarees/${saree._id}`}
+                                            className="edit-btn"
+                                        >
+
+                                            Update
+
+                                        </Link>
 
 
-                                    <div className="product-meta">
-                                        ₹{saree.price}
+                                        {/* DELETE */}
+
+                                        <button
+                                            type="button"
+                                            className="delete-btn"
+                                            onClick={() =>
+                                                handleDelete(
+                                                    saree._id
+                                                )
+                                            }
+                                        >
+
+                                            Delete
+
+                                        </button>
+
+
                                     </div>
 
                                 </div>
 
-
-                                {/* ==================================
-                                    ACTIONS
-                                ================================== */}
-
-                                <div className="product-actions">
-
-
-                                    <Link
-                                        to={`/admin/view/sarees/${saree._id}`}
-                                        className="view-btn"
-                                    >
-                                        View
-                                    </Link>
-
-
-                                    <Link
-                                        to={`/admin/update/sarees/${saree._id}`}
-                                        className="edit-btn"
-                                    >
-                                        Update
-                                    </Link>
-
-
-                                    <button
-                                        type="button"
-                                        className="delete-btn"
-                                        onClick={() =>
-                                            handleDelete(
-                                                saree._id
-                                            )
-                                        }
-                                    >
-                                        Delete
-                                    </button>
-
-
-                                </div>
-
-                            </div>
-
-                        ))}
+                            )
+                        )}
 
                     </div>
 
@@ -324,6 +531,8 @@ const Sarees = () => {
         </div>
 
     );
+
 };
+
 
 export default Sarees;

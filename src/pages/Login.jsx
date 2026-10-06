@@ -53,7 +53,7 @@ const Login = () => {
 
             const response =
                 await fetch(
-                    `${import.meta.env.API_URL}/auth/login`,
+                    `https://sjb-backend-01lg.onrender.com/api/auth/login`,
                     {
                         method: "POST",
 
