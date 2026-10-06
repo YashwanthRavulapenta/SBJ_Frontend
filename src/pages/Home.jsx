@@ -28,38 +28,6 @@ const Home = () => {
 
             </section>
 
-
-            <section className="home-categories">
-
-                <div className="home-card">
-
-                    <h2>
-                        Sarees
-                    </h2>
-
-                    <p>
-                        Explore and manage your
-                        saree collection.
-                    </p>
-
-                </div>
-
-
-                <div className="home-card">
-
-                    <h2>
-                        Jewellery
-                    </h2>
-
-                    <p>
-                        Explore and manage your
-                        jewellery collection.
-                    </p>
-
-                </div>
-
-            </section>
-
         </div>
 
     );

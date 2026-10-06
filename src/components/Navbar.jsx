@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     Link,
@@ -12,17 +12,21 @@ const Navbar = () => {
 
     const navigate = useNavigate();
 
+    const [menuOpen, setMenuOpen] =
+        useState(false);
+
+
+    // ==========================================
+    // GET LOGIN INFORMATION
+    // ==========================================
 
     const token =
         localStorage.getItem("token");
 
-
     const storedUser =
         localStorage.getItem("user");
 
-
     let user = null;
-
 
     try {
 
@@ -33,8 +37,24 @@ const Navbar = () => {
     } catch (error) {
 
         user = null;
+
     }
 
+
+    // ==========================================
+    // CLOSE MOBILE MENU
+    // ==========================================
+
+    const closeMenu = () => {
+
+        setMenuOpen(false);
+
+    };
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
 
     const handleLogout = () => {
 
@@ -42,6 +62,7 @@ const Navbar = () => {
 
         localStorage.removeItem("user");
 
+        setMenuOpen(false);
 
         navigate(
             "/",
@@ -53,88 +74,203 @@ const Navbar = () => {
     };
 
 
+    // ==========================================
+    // CLOSE MENU WHEN WINDOW BECOMES DESKTOP
+    // ==========================================
+
+    useEffect(() => {
+
+        const handleResize = () => {
+
+            if (window.innerWidth > 768) {
+
+                setMenuOpen(false);
+
+            }
+
+        };
+
+
+        window.addEventListener(
+            "resize",
+            handleResize
+        );
+
+
+        return () => {
+
+            window.removeEventListener(
+                "resize",
+                handleResize
+            );
+
+        };
+
+    }, []);
+
+
     return (
 
         <nav className="main-navbar">
 
-            <div className="container navbar-container">
+            <div className="navbar-container">
 
 
-                {/* HOME */}
+                {/* ==================================
+                    BRAND
+                ================================== */}
 
                 <Link
                     to="/"
-                    className="navbar-link"
+                    className="navbar-brand"
+                    onClick={closeMenu}
                 >
-                    Home
+
+                    JCollection
+
                 </Link>
 
 
-                {/* SAREES */}
+                {/* ==================================
+                    MOBILE HAMBURGER
+                ================================== */}
 
-                <Link
-                    to="/sarees"
-                    className="navbar-link"
+                <button
+                    type="button"
+                    className={
+                        menuOpen
+                            ? "navbar-toggle active"
+                            : "navbar-toggle"
+                    }
+                    onClick={() =>
+                        setMenuOpen(
+                            !menuOpen
+                        )
+                    }
+                    aria-label={
+                        menuOpen
+                            ? "Close navigation menu"
+                            : "Open navigation menu"
+                    }
+                    aria-expanded={menuOpen}
                 >
-                    Sarees
-                </Link>
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </button>
 
 
-                {/* JEWELLERY */}
+                {/* ==================================
+                    NAVIGATION MENU
+                ================================== */}
 
-                <Link
-                    to="/jewellery"
-                    className="navbar-link"
+                <div
+                    className={
+                        menuOpen
+                            ? "navbar-menu open"
+                            : "navbar-menu"
+                    }
                 >
-                    Jewellery
-                </Link>
 
 
-                {/* =================================
-                    NOT LOGGED IN
-                ================================= */}
-
-                {!token || !user ? (
+                    {/* HOME */}
 
                     <Link
-                        to="/login"
-                        className="navbar-admin-login"
+                        to="/"
+                        className="navbar-link"
+                        onClick={closeMenu}
                     >
-                        Admin Login
+
+                        Home
+
                     </Link>
 
-                ) : (
 
-                    /* =================================
-                       ADMIN LOGGED IN
-                    ================================= */
+                    {/* SAREES */}
 
-                    <>
+                    <Link
+                        to="/sarees"
+                        className="navbar-link"
+                        onClick={closeMenu}
+                    >
 
-                        <span className="navbar-admin-name">
+                        Sarees
 
-                            Admin: {user.name}
-
-                        </span>
+                    </Link>
 
 
-                        <button
-                            type="button"
-                            onClick={handleLogout}
-                            className="navbar-logout"
+                    {/* JEWELLERY */}
+
+                    <Link
+                        to="/jewellery"
+                        className="navbar-link"
+                        onClick={closeMenu}
+                    >
+
+                        Jewellery
+
+                    </Link>
+
+
+                    {/* ==================================
+                        ADMIN SECTION
+                    ================================== */}
+
+                    {!token || !user ? (
+
+                        <Link
+                            to="/login"
+                            className="navbar-admin-login"
+                            onClick={closeMenu}
                         >
-                            Logout
-                        </button>
 
-                    </>
+                            Admin Login
 
-                )}
+                        </Link>
+
+                    ) : (
+
+                        <div className="navbar-admin-section">
+
+
+                            {/* ADMIN NAME */}
+
+                            <span className="navbar-admin-name">
+
+                                <span className="admin-dot"></span>
+
+                                Admin: {user.name}
+
+                            </span>
+
+
+                            {/* LOGOUT */}
+
+                            <button
+                                type="button"
+                                onClick={handleLogout}
+                                className="navbar-logout"
+                            >
+
+                                Logout
+
+                            </button>
+
+
+                        </div>
+
+                    )}
+
+                </div>
 
             </div>
 
         </nav>
 
     );
+
 };
 
 

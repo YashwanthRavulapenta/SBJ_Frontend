@@ -1,5 +1,9 @@
+/* =========================================================
+   NAVBAR
+========================================================= */
 
 .main-navbar {
+
     width: 100%;
 
     background: #050505;
@@ -7,20 +11,23 @@
     border-bottom: 1px solid #292929;
 
     position: sticky;
+
     top: 0;
 
     z-index: 1000;
 
     box-shadow:
-        0 2px 12px rgba(0, 0, 0, 0.25);
+        0 4px 18px rgba(0, 0, 0, 0.25);
+
 }
 
 
 /* =========================================================
-   NAVBAR CONTAINER
+   MAIN CONTAINER
 ========================================================= */
 
 .navbar-container {
+
     width: 100%;
 
     max-width: 1200px;
@@ -35,17 +42,72 @@
 
     align-items: center;
 
-    justify-content: center;
+    justify-content: space-between;
 
-    gap: 34px;
+    gap: 30px;
+
 }
 
 
 /* =========================================================
-   NAVBAR LINKS
+   BRAND
+========================================================= */
+
+.navbar-brand {
+
+    color: #f6d365;
+
+    text-decoration: none;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.25s ease,
+        transform 0.2s ease;
+
+}
+
+
+.navbar-brand:hover {
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   DESKTOP MENU
+========================================================= */
+
+.navbar-menu {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 30px;
+
+    flex: 1;
+
+}
+
+
+/* =========================================================
+   NORMAL NAV LINKS
 ========================================================= */
 
 .navbar-link {
+
     position: relative;
 
     color: #ffffff;
@@ -56,25 +118,29 @@
 
     font-weight: 600;
 
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
 
     padding: 8px 2px;
 
+    white-space: nowrap;
+
     transition:
         color 0.25s ease;
+
 }
 
 
 .navbar-link:hover {
+
     color: #f6d365;
+
 }
 
 
-/* =========================================================
-   GOLD UNDERLINE
-========================================================= */
+/* GOLD UNDERLINE */
 
 .navbar-link::after {
+
     content: "";
 
     position: absolute;
@@ -93,11 +159,14 @@
 
     transition:
         width 0.25s ease;
+
 }
 
 
 .navbar-link:hover::after {
+
     width: 100%;
+
 }
 
 
@@ -106,15 +175,14 @@
 ========================================================= */
 
 .navbar-admin-login {
+
     color: #f6d365;
 
     text-decoration: none;
 
-    font-size: 15px;
+    font-size: 14px;
 
     font-weight: 700;
-
-    letter-spacing: 0.3px;
 
     padding: 9px 16px;
 
@@ -122,19 +190,39 @@
 
     border-radius: 7px;
 
+    white-space: nowrap;
+
     transition:
         background 0.25s ease,
         color 0.25s ease,
         transform 0.2s ease;
+
 }
 
 
 .navbar-admin-login:hover {
+
     background: #f6d365;
 
     color: #111111;
 
     transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   LOGGED-IN ADMIN SECTION
+========================================================= */
+
+.navbar-admin-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
 }
 
 
@@ -143,34 +231,59 @@
 ========================================================= */
 
 .navbar-admin-name {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
     color: #f6d365;
 
     font-size: 14px;
 
     font-weight: 700;
 
-    letter-spacing: 0.2px;
-
     white-space: nowrap;
 
-    padding: 8px 12px;
+    padding: 8px 10px;
 
-    border-left: 1px solid #333333;
+}
+
+
+/* ONLINE DOT */
+
+.admin-dot {
+
+    width: 7px;
+
+    height: 7px;
+
+    background: #4ade80;
+
+    border-radius: 50%;
+
+    display: inline-block;
+
+    box-shadow:
+        0 0 6px rgba(74, 222, 128, 0.7);
+
 }
 
 
 /* =========================================================
-   LOGOUT BUTTON
+   LOGOUT
 ========================================================= */
 
 .navbar-logout {
+
     border: 1px solid #dc3545;
 
     background: transparent;
 
     color: #ff6b75;
 
-    padding: 8px 16px;
+    padding: 8px 14px;
 
     border-radius: 7px;
 
@@ -186,20 +299,25 @@
         background 0.25s ease,
         color 0.25s ease,
         transform 0.2s ease;
+
 }
 
 
 .navbar-logout:hover {
+
     background: #dc3545;
 
     color: #ffffff;
 
     transform: translateY(-1px);
+
 }
 
 
 .navbar-logout:active {
+
     transform: translateY(0);
+
 }
 
 
@@ -208,6 +326,7 @@
 ========================================================= */
 
 .navbar-toggle {
+
     display: none;
 
     width: 42px;
@@ -231,10 +350,12 @@
     flex-direction: column;
 
     gap: 5px;
+
 }
 
 
 .navbar-toggle span {
+
     display: block;
 
     width: 21px;
@@ -247,56 +368,111 @@
 
     transition:
         transform 0.25s ease,
-        opacity 0.25s ease;
+        opacity 0.25s ease,
+        background 0.25s ease;
+
 }
 
 
 .navbar-toggle:hover {
+
     border-color: #f6d365;
+
 }
 
 
 .navbar-toggle:hover span {
+
     background: #f6d365;
+
+}
+
+
+/* =========================================================
+   HAMBURGER → X ANIMATION
+========================================================= */
+
+.navbar-toggle.active span:nth-child(1) {
+
+    transform:
+        translateY(7px)
+        rotate(45deg);
+
+}
+
+
+.navbar-toggle.active span:nth-child(2) {
+
+    opacity: 0;
+
+}
+
+
+.navbar-toggle.active span:nth-child(3) {
+
+    transform:
+        translateY(-7px)
+        rotate(-45deg);
+
 }
 
 
 /* =========================================================
    TABLET
+   769px - 1000px
 ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 
     .navbar-container {
-        gap: 22px;
 
-        padding: 0 20px;
+        padding-left: 20px;
+
+        padding-right: 20px;
+
+        gap: 20px;
+
+    }
+
+
+    .navbar-menu {
+
+        gap: 20px;
+
     }
 
 
     .navbar-link {
+
         font-size: 14px;
+
     }
 
 
     .navbar-admin-login {
-        font-size: 14px;
 
-        padding: 8px 13px;
+        padding:
+            8px 13px;
+
+        font-size: 13px;
+
     }
 
 
     .navbar-admin-name {
+
         font-size: 13px;
 
-        padding: 7px 9px;
     }
 
 
     .navbar-logout {
+
+        padding:
+            7px 12px;
+
         font-size: 13px;
 
-        padding: 7px 12px;
     }
 
 }
@@ -304,40 +480,68 @@
 
 /* =========================================================
    MOBILE
+   768px AND BELOW
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
 
     .main-navbar {
+
         position: sticky;
 
         top: 0;
+
     }
 
 
+    /* -----------------------------------------
+       CONTAINER
+    ----------------------------------------- */
+
     .navbar-container {
-        min-height: 64px;
 
-        padding: 11px 16px;
+        min-height: 62px;
 
-        justify-content: space-between;
+        padding:
+            10px 16px;
+
+        display: flex;
 
         flex-wrap: wrap;
 
         gap: 0;
+
     }
 
 
-    /* Show hamburger */
+    /* -----------------------------------------
+       BRAND
+    ----------------------------------------- */
+
+    .navbar-brand {
+
+        font-size: 20px;
+
+    }
+
+
+    /* -----------------------------------------
+       SHOW HAMBURGER
+    ----------------------------------------- */
 
     .navbar-toggle {
+
         display: flex;
+
     }
 
 
-    /* Mobile menu */
+    /* -----------------------------------------
+       MOBILE MENU
+    ----------------------------------------- */
 
     .navbar-menu {
+
         width: 100%;
 
         display: none;
@@ -346,105 +550,259 @@
 
         align-items: stretch;
 
-        gap: 5px;
+        justify-content: flex-start;
 
-        padding: 14px 0 5px;
+        gap: 4px;
 
-        border-top: 1px solid #292929;
+        flex-basis: 100%;
+
+        padding:
+            12px 0 4px;
 
         margin-top: 10px;
+
+        border-top:
+            1px solid #292929;
+
     }
 
+
+    /* OPEN */
 
     .navbar-menu.open {
+
         display: flex;
+
     }
 
 
+    /* -----------------------------------------
+       MOBILE LINKS
+    ----------------------------------------- */
+
     .navbar-link {
+
         width: 100%;
 
-        padding: 12px 10px;
+        padding:
+            13px 12px;
 
-        border-radius: 6px;
+        border-radius: 7px;
 
         font-size: 15px;
+
+        box-sizing: border-box;
+
     }
 
 
     .navbar-link:hover {
-        background: rgba(
-            246,
-            211,
-            101,
-            0.08
-        );
+
+        background:
+            rgba(
+                246,
+                211,
+                101,
+                0.08
+            );
+
     }
 
 
     .navbar-link::after {
+
         display: none;
+
     }
 
 
+    /* -----------------------------------------
+       ADMIN LOGIN
+    ----------------------------------------- */
+
     .navbar-admin-login {
+
         width: 100%;
+
+        box-sizing: border-box;
 
         text-align: center;
 
-        margin-top: 5px;
+        margin-top: 6px;
+
+        padding:
+            12px;
+
     }
 
+
+    /* -----------------------------------------
+       ADMIN SECTION
+    ----------------------------------------- */
+
+    .navbar-admin-section {
+
+        width: 100%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 7px;
+
+        margin-top: 5px;
+
+        padding-top: 8px;
+
+        border-top:
+            1px solid #292929;
+
+    }
+
+
+    /* -----------------------------------------
+       ADMIN NAME
+    ----------------------------------------- */
 
     .navbar-admin-name {
+
         width: 100%;
 
-        padding: 12px 10px;
+        box-sizing: border-box;
 
-        border-left: none;
+        padding:
+            12px;
 
-        border-bottom: 1px solid #292929;
+        border-radius: 7px;
+
+        background:
+            rgba(
+                246,
+                211,
+                101,
+                0.05
+            );
+
     }
 
 
+    /* -----------------------------------------
+       LOGOUT
+    ----------------------------------------- */
+
     .navbar-logout {
+
         width: 100%;
 
-        margin-top: 5px;
+        padding:
+            12px;
 
-        padding: 11px;
     }
 
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   SMALL PHONES
+   480px AND BELOW
 ========================================================= */
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
 
     .navbar-container {
-        padding-left: 12px;
 
-        padding-right: 12px;
+        padding:
+            9px 12px;
+
+    }
+
+
+    .navbar-brand {
+
+        font-size: 19px;
+
     }
 
 
     .navbar-toggle {
+
         width: 40px;
 
         height: 40px;
+
+    }
+
+
+    .navbar-menu {
+
+        padding-top: 10px;
+
     }
 
 
     .navbar-link {
+
         font-size: 14px;
+
+        padding:
+            12px 10px;
+
     }
 
 
     .navbar-admin-login {
+
         font-size: 14px;
+
+    }
+
+
+    .navbar-admin-name {
+
+        font-size: 14px;
+
+    }
+
+
+    .navbar-logout {
+
+        font-size: 14px;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   360px AND BELOW
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .navbar-brand {
+
+        font-size: 18px;
+
+    }
+
+
+    .navbar-toggle {
+
+        width: 38px;
+
+        height: 38px;
+
+    }
+
+
+    .navbar-link {
+
+        padding:
+            11px 9px;
+
     }
 
 }
